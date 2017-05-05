@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 
+
 // The list of players
 enum Player {
     WHITE = 0,
@@ -70,11 +71,11 @@ public:
     // The method returns an integer with the status
     // >= 0 is SUCCESS, < 0 is failure
     // [Do not modify the type of this method]
-    virtual int makeMove(Position start, Position end) {
+    virtual int makeMove(Position start, Position end);
         // This method may handle the parts of moving pieces that
         // generalize over different board games
-        return 0;
-    }
+       
+    
 
     void printBoard();
     // The main gameplay loop. Ideally, you should be able to implement
@@ -155,25 +156,24 @@ public:
     // Returns an integer representing move validity
     // >= 0 = valid, < 0 = invalid
     // [Do not modify the type of this method]
-    virtual int validMove(Position start, Position end,
-           const Board& board) const {
+    virtual int validMove(Position start, Position end, const Board& board) const {
         // This particular method may include generic logic to check
         // for a valid move. 
         if (!board.validPosition(start) || !board.validPosition(end)) {
             return -1;
         }
         if (start.x == end.x && start.y == end.y) {
-            return -1;
+            return -2;
         }
         if (!board.getPiece(start)) {
-            return -1;
+            return -3;
         }
         if (board.getPiece(start)->owner() != board.turn()) {
-            return -1;
+            return -4;
         }
 
         if (board.getPiece(end)->owner() == board.turn()) {
-            return -1;
+            return -5;
         }
 
         return 1;

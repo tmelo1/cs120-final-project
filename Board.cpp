@@ -83,7 +83,7 @@ void Board::printBoard() {
 
     for (unsigned int i = 0; i < m_width; i++) {
         for (unsigned int j = 0; j < m_height; j++) {
-            Position curr = Position(j, i);
+            Position curr = Position(i, j);
             Piece *p = getPiece(curr);
             if (p) {
                 std::cout << p->id() << " ";
@@ -94,3 +94,21 @@ void Board::printBoard() {
         std::cout << std::endl;
     }
 }
+
+
+int Board::makeMove(Position start, Position end) {
+
+    Piece *p = getPiece(start);
+    if (!p->validMove(start, end, *this)) {
+        return -1;
+    }
+    int id = p->id();
+    Player pt = playerTurn();
+    if (!initPiece(id, pt, end)) {
+        return -1;
+    }
+    delete(p);
+    return 1;
+
+}
+        
