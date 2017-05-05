@@ -2,6 +2,12 @@
 #define GAME_H
 #include <vector>
 #include <map>
+/**
+Tony Melo - tmelo1@jhu.edu (tmelo1)
+EN600.120
+Assignment - FInal Project
+5/5/2017
+ */
 
 
 // The list of players

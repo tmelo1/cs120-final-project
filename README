@@ -1,0 +1,12 @@
+Tony Melo
+
+
+So, this is an individual submission which I posted on Piazza about. Essentially what happened was that my first partner didn't tell me that we weren't going to be any partners, so I had to scramble at the last second to find a new partner. Which I did, for worse. What happened was that essentially was that my partner pushed a bunch of unusable code on Thursday morning, which was the only part she was responsible for. When I tried to debug it, I found so many fundamental errors that fixing 30 something errors yielded about 40 more. Thus, on Thursday night, I had to start the project from scratch by myself, which obviously is never going to go well for such a massive project.
+
+
+COMPLETENESS:
+I ask that you have at least a bit of mercy on me because I did what I could in trying to do this project, I stayed up ALL night and worked the entire time on this, but inevitably I just could not finish enough. There is a lot of functionality missing from the project, but I tried to at least get some kind of algorithms for many different methodsso that my approach became clearer than just having one working thing. I know things like checkmate, checking, capturing and a lot of other thing just did not work. This is nowhere near the standard of project I would like to submit, but it's the only thing I could produce with what I got.
+
+DESIGN:
+I essentially did most things in ChessGame because it could take advantage being a subclass of Board and access all the useful methods from Board. Had I had the time, I could've implemented a function to determine whether a player is in check, whether or not a player has won by whether any piece can save the king from being in check, a function to promote a pawn to a queen, a nicer looking board, diagonal movement checking, loading from save files and much more. My code as is is already quite modular, but obviously incredibly incomplete. 
+

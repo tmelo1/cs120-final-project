@@ -5,6 +5,12 @@
 #include "Game.h"
 #include "Prompts.h"
 
+/**
+Tony Melo - tmelo1@jhu.edu (tmelo1)
+EN600.120
+Assignment - FInal Project
+5/5/2017
+ */
 ///////////////
 // Board //
 ///////////////
