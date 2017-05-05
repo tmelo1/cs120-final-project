@@ -79,6 +79,8 @@ public:
 
     void nextTurn() { m_turn++; }
 
+    bool blockedMove(Position start, Position end) const;
+
     void printBoard();
     // The main gameplay loop. Ideally, you should be able to implement
     // all of the gameplay loop logic here in the Board class rather than

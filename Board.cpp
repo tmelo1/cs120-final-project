@@ -101,7 +101,7 @@ void Board::printBoard() {
 int Board::makeMove(Position start, Position end) {
 
     Piece *p = getPiece(start);
-    if (!p->validMove(start, end, *this)) {
+    if (p->validMove(start, end, *this) < 0) {
         return -1;
     }
     int id = p->id();

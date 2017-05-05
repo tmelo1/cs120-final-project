@@ -127,6 +127,9 @@ public:
         addFactory(new PieceFactory<King>(KING_ENUM));
     }
 
+    virtual ~ChessGame() {}
+    virtual void run() const;
+
     // Setup the chess board with its initial pieces
     virtual void setupBoard();
 
@@ -158,9 +161,11 @@ public:
         return displayBoard;
     }
 
-    void endGame() { isGameOver = true; }
+    void endGame() const;
 
-    void forfeit();
+    void forfeit() const;
+
+
 
     std::string convertPosition(unsigned int row, unsigned int col);
 

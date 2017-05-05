@@ -12,6 +12,10 @@
 #include <cctype>
 #include <fstream>
 
+void ChessGame::run() const {
+
+}
+
 int Piece::validMove(Position start, Position end, const Board& board) const {
         // This particular method may include generic logic to check
         // for a valid move. 
@@ -86,6 +90,7 @@ int Pawn::validMove(Position start, Position end, const Board& board) const {
     }
 
     if (start.x <= end.x) {
+        Prompts::illegalMove();
         return -1;
     }
 
@@ -94,35 +99,38 @@ int Pawn::validMove(Position start, Position end, const Board& board) const {
 
 int Rook::validMove(Position start, Position end, const Board& board) const {
     switch (Piece::validMove(start, end, board)) {
+        case -1:
+            Prompts::outOfBounds();
+            return -1;
+        case -2:
+            Prompts::illegalMove();
+            return -1;
+        case -3:
+            Prompts::noPiece();
+            return -1;
+        case -4:
+            Prompts::noPiece();
+            return -1;
+        case -5:
+            Prompts::blocked();
+            return -1;
         case 1:
             break;
-        default:
-            return -1;
     }
 
     int xDiff = end.x - start.y;
     int yDiff = end.y - start.y;
-    if (xDiff != 0) {
-        if (yDiff != 0) {
-            Prompts::illegalMove();
-            return -1;
-        }
-    }
 
-    /**
-    if (xDiff == 0) {
-        if (yDiff > 0) {
-            for (unsigned int j = start.y; j <= end.y; j++) {
-                Position check = Position(start.x, j);
-                Piece *p = board.getPiece(check);
-                if (p) {
-                    Prompts::blocked();
-                    return -1;
-                }
-            }
-         }
+    if (xDiff != 0 && yDiff != 0) {
+        Prompts::illegalMove();
+        return -1;
     }
-    */
+    
+    if (board.blockedMove(start, end)) {
+        Prompts::blocked();
+        return -1;
+    }
+    
     return 1;
 }
 
@@ -171,9 +179,62 @@ int Bishop::validMove(Position start, Position end, const Board& board) const {
             break;
     }
 
+    int xDiff = end.x - start.x;
+    int yDiff = end.y - start.x;
+    if (xDiff == 0 || yDiff == 0) {
+        Prompts::illegalMove();
+        return -1;
+    }
+
     return 1;
 }
 
+bool Board::blockedMove(Position start, Position end) const {
+    int xDiff = end.x - start.x;
+    int yDiff = end.y - start.y;
+    if (xDiff == 0) {
+        if (yDiff > 0) {
+            for (unsigned int j = start.y; j < end.y; j++) {
+                Position check = Position(start.x, j);
+                Piece *p = getPiece(check);
+                if (p) {
+                    Prompts::blocked();
+                    return -1;
+                }
+            }
+        } else if (yDiff < 0) {
+            for (unsigned int j = end.y; j > start.y; j--) {
+                Position check = Position(start.x, j);
+                Piece *p = getPiece(check);
+                if (p) {
+                    Prompts::blocked();
+                    return -1;
+                }
+            }
+        }
+    } else if (yDiff == 0) {
+        if (xDiff > 0) {
+            for (unsigned int i = start.x; i < end.x; i++) {
+                Position check = Position(i, start.y);
+                Piece *p = getPiece(check);
+                if (p) {
+                    Prompts::blocked();
+                    return -1;
+                }
+            }
+        } else if (xDiff < 0) {
+            for (unsigned int i = end.x; i > start.x; i--) {
+                Position check = Position(i, start.y);
+                Piece *p = getPiece(check);
+                if (p) {
+                    Prompts::blocked();
+                    return -1;
+                }
+            }
+        }
+    }
+    return 1;
+}
 
 int Queen::validMove(Position start, Position end, const Board& board) const {
     switch (Piece::validMove(start, end, board)) {
@@ -226,6 +287,7 @@ int King::validMove(Position start, Position end, const Board& board) const {
 int ChessGame::isValidCommand(std::string command) {
     switch (command[0]) {
         case 'q':
+            this->~ChessGame();
             exit(1);
         case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h':
             break;
@@ -253,18 +315,29 @@ int ChessGame::parseCommand(std::string command) {
 
     if (tokens[0].compare("board")) {
         toggleDisplay();
+        return 1;
     }
 
     if (tokens[0].compare("save")) {
         Prompts::saveGame();
         std::cin >> item;
-        saveGame(item);
+        int status = saveGame(item);
+        if (status < 0) {
+            return -1;
+        } else 
+            return 1;
+    }
+
+    if (tokens[0].compare("forfeit")) {
+        forfeit();
     }
 
     if (!isValidCommand(tokens[0]) || !isValidCommand(tokens[1])) {
         Prompts::parseError();
-        return 0;
+        return -1;
     }
+
+
 
     return 1;
 }
@@ -281,6 +354,7 @@ std::string ChessGame::stringToLower(std::string input) {
 int ChessGame::saveGame(std::string fileName) {
     std::ofstream saveFile(fileName);
     if (saveFile.fail()) {
+        Prompts::saveFailure();
         return -1;
     }
     saveFile << "chess" << '\n';
@@ -334,6 +408,21 @@ std::string ChessGame::convertPosition(unsigned int row, unsigned int col) {
     pos = pos + rows;
     return pos;
 }
+
+void ChessGame::forfeit() const {
+    Player current = playerTurn();
+    int t = turn();
+    Prompts::win(current, t);
+    endGame();
+
+}
+
+void ChessGame::endGame() const {
+    Prompts::gameOver();
+    this->~ChessGame();
+    exit(1);
+}
+
 
 int main() {
     ChessGame chess;
