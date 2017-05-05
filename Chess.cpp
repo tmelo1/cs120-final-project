@@ -21,6 +21,7 @@ void ChessGame::run() {
     std::cin >> in;
     if (in.compare("1") == 0) {
         setupBoard();
+        Prompts::playerPrompt(playerTurn(), turn());
     } else if (in.compare("2") == 0) {
         Prompts::loadGame();
         std::cin >> file;
@@ -348,8 +349,10 @@ int ChessGame::parseCommand(std::string command) {
         int status = saveGame(item);
         if (status < 0) {
             return -1;
-        } else 
+        } else {
+            nextTurn();
             return 1;
+        }
     }
 
     if (tokens[0].compare("forfeit")) {
@@ -444,7 +447,7 @@ int ChessGame::saveGame(std::string fileName) const {
     saveFile << "chess" << '\n';
     saveFile << turn() << '\n';
     for (unsigned int i = 0; i < m_width; i++) {
-        for (unsigned int j = 0; m_height; j++) {
+        for (unsigned int j = 0; j < m_height; j++) {
             Position current = Position(i, j);
             Piece *p = getPiece(current);
             if (!p) {
@@ -460,6 +463,7 @@ int ChessGame::saveGame(std::string fileName) const {
 }
 
 void ChessGame::readSaveFile(std::string fileName) const {
+    std::cout << fileName << std::endl;
     return;
 }
 

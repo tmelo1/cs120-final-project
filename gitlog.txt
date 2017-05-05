@@ -1,0 +1,29 @@
+commit 2dc3ab3c64750c7fc2a7997d3ea06faed2a0d755
+Author: Tony M <tmelo1@jhu.edu>
+Date:   Fri May 5 17:48:55 2017 -0400
+
+    Compiles...
+
+commit 45e9ab71267844074720cbf63ffe4bc811cefb46
+Author: Tony M <tmelo1@jhu.edu>
+Date:   Fri May 5 15:55:10 2017 -0400
+
+    Compiles, added end game states
+
+commit 925357e0e11cc6419fcbbfa5e993f63a07afde9d
+Author: Tony M <tmelo1@jhu.edu>
+Date:   Fri May 5 04:20:27 2017 -0400
+
+    Compiles, added functions for saving, parsing, checking states
+
+commit 78c6197a3256f65e335832456300f5f68af7046d
+Author: Tony M <tmelo1@jhu.edu>
+Date:   Thu May 4 22:13:57 2017 -0400
+
+    Compiles, adds functions
+
+commit 0db708191e5327ed140e1e8e13eff5f4f700d316
+Author: Tony M <tmelo1@jhu.edu>
+Date:   Thu May 4 19:25:11 2017 -0400
+
+    remade repo
