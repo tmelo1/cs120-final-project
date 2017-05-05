@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <cctype>
 #include <iostream>
-
+#include <sstream>
 #include "Game.h"
 #include "Prompts.h"
 
@@ -96,6 +96,8 @@ void Board::printBoard() {
 }
 
 
+
+
 int Board::makeMove(Position start, Position end) {
 
     Piece *p = getPiece(start);
@@ -111,4 +113,3 @@ int Board::makeMove(Position start, Position end) {
     return 1;
 
 }
-        

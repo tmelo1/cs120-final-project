@@ -75,13 +75,15 @@ public:
         // This method may handle the parts of moving pieces that
         // generalize over different board games
        
-    
+    void setTurn(int currentTurn) { m_turn = currentTurn; }
+
+    void nextTurn() { m_turn++; }
 
     void printBoard();
     // The main gameplay loop. Ideally, you should be able to implement
     // all of the gameplay loop logic here in the Board class rather than
     // overriding this method in the specialized Game-specific class
-    virtual void run() { printBoard();   }
+    virtual void run() {}
 
 
     // Returns "true" if the game is over
@@ -156,28 +158,8 @@ public:
     // Returns an integer representing move validity
     // >= 0 = valid, < 0 = invalid
     // [Do not modify the type of this method]
-    virtual int validMove(Position start, Position end, const Board& board) const {
-        // This particular method may include generic logic to check
-        // for a valid move. 
-        if (!board.validPosition(start) || !board.validPosition(end)) {
-            return -1;
-        }
-        if (start.x == end.x && start.y == end.y) {
-            return -2;
-        }
-        if (!board.getPiece(start)) {
-            return -3;
-        }
-        if (board.getPiece(start)->owner() != board.turn()) {
-            return -4;
-        }
+    virtual int validMove(Position start, Position end, const Board& board) const;
 
-        if (board.getPiece(end)->owner() == board.turn()) {
-            return -5;
-        }
-
-        return 1;
-    }
 
 protected:
     Player m_owner;

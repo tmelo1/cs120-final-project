@@ -2,7 +2,7 @@
 #define CHESS_H
 
 #include "Game.h"
-
+#include <string>
 // Game status codes
 // -----------------
 // These enumerations are optional. You can choose to use them,
@@ -40,6 +40,19 @@ enum PieceEnum {
     QUEEN_ENUM,
     KING_ENUM
 };
+
+enum ColumnEnum {
+    A_ENUM = 0,
+    B_ENUM,
+    C_ENUM,
+    D_ENUM,
+    E_ENUM,
+    F_ENUM,
+    G_ENUM,
+    H_ENUM,
+};
+
+
 
 class Pawn : public Piece {
 protected:
@@ -104,7 +117,7 @@ public:
 
 class ChessGame : public Board {
 public:
-    ChessGame() : Board(8, 8) {
+    ChessGame() : Board(8, 8), displayBoard(false), isGameOver(false) {
         // Add all factories needed to create Piece subclasses
         addFactory(new PieceFactory<Pawn>(PAWN_ENUM));
         addFactory(new PieceFactory<Rook>(ROOK_ENUM));
@@ -118,12 +131,43 @@ public:
     virtual void setupBoard();
 
     // Whether the chess game is over
-    virtual bool gameOver() const override { return false; }
+    virtual bool gameOver() const override { return isGameOver; }
 
     // Perform a move from the start Position to the end Position
     // The method returns an integer with the status
     // >= 0 is SUCCESS, < 0 is failure
     virtual int makeMove(Position start, Position end) override;
+
+    int isValidCommand(std::string command);
+
+    int parseCommand(std::string command);
+
+    void readSaveFile(std::string fileName);
+
+    int saveGame(std::string fileName);
+
+    std::string stringToLower(std::string input);
+
+    bool toggleDisplay() {
+        if (displayBoard) {
+            displayBoard = false;
+        } else {
+            displayBoard = true;
+            Board::printBoard();
+        }
+        return displayBoard;
+    }
+
+    void endGame() { isGameOver = true; }
+
+    void forfeit();
+
+    std::string convertPosition(unsigned int row, unsigned int col);
+
+protected:
+    bool displayBoard;
+    bool isGameOver;
+
 };
 
 #endif
