@@ -12,7 +12,27 @@
 #include <cctype>
 #include <fstream>
 
-void ChessGame::run() const {
+void ChessGame::run() {
+    std::string in;
+    std::string file;
+
+    goagain:
+    Prompts::menu();
+    std::cin >> in;
+    if (in.compare("1") == 0) {
+        setupBoard();
+    } else if (in.compare("2") == 0) {
+        Prompts::loadGame();
+        std::cin >> file;
+        readSaveFile(file);
+    } else {
+        goto goagain;
+    }
+
+    while (true) {
+        std::cin >> in;
+        parseCommand(in);
+    }
 
 }
 
@@ -284,7 +304,7 @@ int King::validMove(Position start, Position end, const Board& board) const {
     return 1;
 }
 
-int ChessGame::isValidCommand(std::string command) {
+int ChessGame::isValidCommand(std::string command) const {
     switch (command[0]) {
         case 'q':
             this->~ChessGame();
@@ -307,8 +327,12 @@ int ChessGame::parseCommand(std::string command) {
     command = stringToLower(command);
     std::stringstream ss(command);
     std::string item;
-    unsigned int x;
-    unsigned int y;
+    unsigned int s_x;
+    unsigned int s_y;
+    unsigned int e_x;
+    unsigned int e_y;
+    Position s;
+    Position e;
     std::vector<std::string> tokens;
     while (ss >> item)
         tokens.push_back(item);
@@ -335,6 +359,66 @@ int ChessGame::parseCommand(std::string command) {
     if (!isValidCommand(tokens[0]) || !isValidCommand(tokens[1])) {
         Prompts::parseError();
         return -1;
+    } else {
+        switch(tokens[0][0]) {
+            case 'a':
+                s_x = A_ENUM;
+                break;
+            case 'b':
+                s_x = B_ENUM;
+                break;
+            case 'c':
+                s_x = C_ENUM;
+                break;
+            case 'd':
+                s_x = D_ENUM;
+                break;
+            case 'e':
+                s_x = E_ENUM;
+                break;
+            case 'f':
+                s_x = F_ENUM;
+                break;
+            case 'g':
+                s_x = G_ENUM;
+                break;
+            case 'h':
+                s_x = H_ENUM;
+                break;
+        }
+        s_y = tokens[0][1] - '0' - 1;
+        s = Position(s_x, s_y);
+
+        switch(tokens[1][0]) {
+            case 'a':
+                e_x = A_ENUM;
+                break;
+            case 'b':
+                e_x = B_ENUM;
+                break;
+            case 'c':
+                e_x = C_ENUM;
+                break;
+            case 'd':
+                e_x = D_ENUM;
+                break;
+            case 'e':
+                e_x = E_ENUM;
+                break;
+            case 'f':
+                e_x = F_ENUM;
+                break;
+            case 'g':
+                e_x = G_ENUM;
+                break;
+            case 'h':
+                e_x = H_ENUM;
+                break;
+        }
+
+        e_y = tokens[1][1] - '0' - 1;
+        e = Position(e_x, e_y);
+
     }
 
 
@@ -342,7 +426,7 @@ int ChessGame::parseCommand(std::string command) {
     return 1;
 }
 
-std::string ChessGame::stringToLower(std::string input) {
+std::string ChessGame::stringToLower(std::string input) const {
     for (unsigned int i = 0; i < input.length(); i++) {
         if (isalpha(input[i])) {
             input[i] = tolower(input[i]);
@@ -351,7 +435,7 @@ std::string ChessGame::stringToLower(std::string input) {
     return input;
 }
 
-int ChessGame::saveGame(std::string fileName) {
+int ChessGame::saveGame(std::string fileName) const {
     std::ofstream saveFile(fileName);
     if (saveFile.fail()) {
         Prompts::saveFailure();
@@ -375,7 +459,11 @@ int ChessGame::saveGame(std::string fileName) {
 
 }
 
-std::string ChessGame::convertPosition(unsigned int row, unsigned int col) {
+void ChessGame::readSaveFile(std::string fileName) const {
+    return;
+}
+
+std::string ChessGame::convertPosition(unsigned int row, unsigned int col) const {
     std::string rows = std::to_string(row + 1);
     std::string pos("");
     switch(col) {
@@ -426,6 +514,5 @@ void ChessGame::endGame() const {
 
 int main() {
     ChessGame chess;
-    chess.setupBoard();
     chess.run();
 }

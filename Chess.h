@@ -128,7 +128,9 @@ public:
     }
 
     virtual ~ChessGame() {}
-    virtual void run() const;
+
+
+    virtual void run();
 
     // Setup the chess board with its initial pieces
     virtual void setupBoard();
@@ -141,22 +143,22 @@ public:
     // >= 0 is SUCCESS, < 0 is failure
     virtual int makeMove(Position start, Position end) override;
 
-    int isValidCommand(std::string command);
+    int isValidCommand(std::string command) const;
 
     int parseCommand(std::string command);
 
-    void readSaveFile(std::string fileName);
+    void readSaveFile(std::string fileName) const;
 
-    int saveGame(std::string fileName);
+    int saveGame(std::string fileName) const;
 
-    std::string stringToLower(std::string input);
+    std::string stringToLower(std::string input) const;
 
     bool toggleDisplay() {
         if (displayBoard) {
             displayBoard = false;
         } else {
             displayBoard = true;
-            Board::printBoard();
+            printBoard();
         }
         return displayBoard;
     }
@@ -167,7 +169,7 @@ public:
 
 
 
-    std::string convertPosition(unsigned int row, unsigned int col);
+    std::string convertPosition(unsigned int row, unsigned int col) const;
 
 protected:
     bool displayBoard;
